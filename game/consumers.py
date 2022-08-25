@@ -81,6 +81,7 @@ class SocketAdapter(AsyncJsonWebsocketConsumer):
             if request_method == "DELETE":
                 r = requests.delete(url=request_url, data=request_data)
             result = r.json()
+            print('---------------------------', result)
 
             response = {
                 'jsonrpc': '2.0',
