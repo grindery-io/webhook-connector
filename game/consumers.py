@@ -81,11 +81,11 @@ class SocketAdapter(AsyncJsonWebsocketConsumer):
             if request_method == "DELETE":
                 r = requests.delete(url=request_url, data=request_data)
             result = r.json()
-            print('---------------------------', result)
+            print('---------------------------', result.status_code)
 
             response = {
                 'jsonrpc': '2.0',
-                'result': {result},
+                'result': {result.status_code},
                 'id': id
             }
             await self.send_json(response)
