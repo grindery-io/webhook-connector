@@ -88,7 +88,7 @@ class SocketAdapter(AsyncJsonWebsocketConsumer):
 
             response = {
                 'jsonrpc': '2.0',
-                'result': result,
+                'result': {},
                 'id': id
             }
             await self.send_json(response)
