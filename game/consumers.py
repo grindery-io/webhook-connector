@@ -70,22 +70,25 @@ class SocketAdapter(AsyncJsonWebsocketConsumer):
                 if fields['data'] != "":
                     request_data = json.loads(fields['data'])
 
-            if request_method == "GET":
-                r = requests.get(url=request_url, params=request_data)
-            if request_method == "POST":
-                r = requests.post(url=request_url, data=request_data)
-            if request_method == "PUT":
-                r = requests.put(url=request_url, data=request_data)
-            if request_method == "PATCH":
-                r = requests.patch(url=request_url, data=request_data)
-            if request_method == "DELETE":
-                r = requests.delete(url=request_url, data=request_data)
-            result = r.json()
-            print('---------------------------', result.status_code)
+            result = True
+            r = ""
+            try:
+                if request_method == "GET":
+                    r = requests.get(url=request_url, params=request_data)
+                if request_method == "POST":
+                    r = requests.post(url=request_url, data=request_data)
+                if request_method == "PUT":
+                    r = requests.put(url=request_url, data=request_data)
+                if request_method == "PATCH":
+                    r = requests.patch(url=request_url, data=request_data)
+                if request_method == "DELETE":
+                    r = requests.delete(url=request_url, data=request_data)
+            except:
+                result = False
 
             response = {
                 'jsonrpc': '2.0',
-                'result': {result.status_code},
+                'result': {result},
                 'id': id
             }
             await self.send_json(response)
