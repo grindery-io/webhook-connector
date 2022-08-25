@@ -10,6 +10,7 @@ class SocketAdapter(AsyncJsonWebsocketConsumer):
         super().__init__(*args, **kwargs)
         self.background_tasks = set()
         self.connected = False
+        self.path = None
 
     async def connect(self):
         self.connected = True
@@ -17,6 +18,8 @@ class SocketAdapter(AsyncJsonWebsocketConsumer):
 
     async def disconnect(self, close_code):
         self.connected = False
+        if self.path in connection_list:
+            del connection_list[self.path]
         print('-----socket disconnected-----')
 
     async def receive(self, text_data=None, bytes_data=None, **kwargs):
@@ -30,6 +33,7 @@ class SocketAdapter(AsyncJsonWebsocketConsumer):
 
         if method == 'setupTrigger':
             path = fields["webhook_url"].strip("/").split("/")[-1]
+            self.path = path
             connection_list[path] = self
             response = {
                 'jsonrpc': '2.0',
@@ -70,8 +74,6 @@ class SocketAdapter(AsyncJsonWebsocketConsumer):
                 if fields['data'] != "":
                     request_data = json.loads(fields['data'])
 
-            result = True
-            r = ""
             try:
                 if request_method == "GET":
                     r = requests.get(url=request_url, params=request_data)
@@ -83,12 +85,19 @@ class SocketAdapter(AsyncJsonWebsocketConsumer):
                     r = requests.patch(url=request_url, data=request_data)
                 if request_method == "DELETE":
                     r = requests.delete(url=request_url, data=request_data)
+                response_status = r.status_code
+                response_body = r.json()
             except:
-                result = False
-
+                response_status = "Failed request"
+                response_body = {}
             response = {
                 'jsonrpc': '2.0',
-                'result': {},
+                'result': {
+                    'payload': {
+                        'status': response_status,
+                        'body': response_body
+                    }
+                },
                 'id': id
             }
             await self.send_json(response)
