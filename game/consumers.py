@@ -67,7 +67,8 @@ class SocketAdapter(AsyncJsonWebsocketConsumer):
             if "url" in fields:
                 request_url = fields['url']
             if "data" in fields:
-                request_data = json.loads(fields['data'])
+                if fields['data'] != "":
+                    request_data = json.loads(fields['data'])
 
             if request_method == "GET":
                 r = requests.get(url=request_url, params=request_data)
