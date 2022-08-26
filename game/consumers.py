@@ -52,13 +52,11 @@ class SocketAdapter(AsyncJsonWebsocketConsumer):
             if existed is not None:
                 run_action_response = {
                     'jsonrpc': '2.0',
-                    'result': {
-                        'key': 'notifySignal',
-                        'params': {
-                            'key': 'inboundWebhook',
-                            'sessionId': connection_list[path].session_id,
-                            'payload': fields['payload']
-                        }
+                    'method': 'notifySignal',
+                    'params': {
+                        'key': 'inboundWebhook',
+                        'sessionId': connection_list[path].session_id,
+                        'payload': fields['payload']
                     },
                     'id': id
                 }
