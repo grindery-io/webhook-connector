@@ -45,20 +45,17 @@ class SocketAdapter(AsyncJsonWebsocketConsumer):
 
         if method == 'callWebhook':
             path = fields["path"]
-            print('-------path--------', path)
-            print('-------connection_list--------', connection_list)
+            print('-------request--------', request)
             existed = next((i for i, d in enumerate(connection_list) if path in d), None)
-            print('-------existed--------', existed)
             if existed is not None:
                 run_action_response = {
                     'jsonrpc': '2.0',
                     'result': {
                         'key': 'notifySignal',
-                        'payload': params['fields']
+                        'payload': params
                     },
                     'id': id
                 }
-                print('-------connection_list[path]--------', connection_list[path])
                 await connection_list[path].send_json(run_action_response)
             response = {
                 'jsonrpc': '2.0',
