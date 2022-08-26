@@ -24,6 +24,7 @@ class SocketAdapter(AsyncJsonWebsocketConsumer):
 
     async def receive(self, text_data=None, bytes_data=None, **kwargs):
         request = json.loads(text_data)
+        print('----------------------request------------------', request)
         method = request.get("method", None)
         params = request.get("params", None)
         fields = {}
