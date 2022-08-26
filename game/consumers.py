@@ -51,10 +51,11 @@ class SocketAdapter(AsyncJsonWebsocketConsumer):
                     'jsonrpc': '2.0',
                     'result': {
                         'key': 'notifySignal',
-                        'payload': params['fields']
+                        'payload': params
                     },
                     'id': id
                 }
+                print('-------connection_list[path]--------', connection_list[path])
                 await connection_list[path].send_json(run_action_response)
             response = {
                 'jsonrpc': '2.0',
