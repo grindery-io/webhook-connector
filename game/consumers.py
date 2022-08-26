@@ -11,6 +11,7 @@ class SocketAdapter(AsyncJsonWebsocketConsumer):
         self.background_tasks = set()
         self.connected = False
         self.path = None
+        self.session_id = None
 
     async def connect(self):
         self.connected = True
@@ -35,6 +36,7 @@ class SocketAdapter(AsyncJsonWebsocketConsumer):
         if method == 'setupSignal':
             path = fields["webhook_url"].strip("/").split("/")[-1]
             self.path = path
+            self.session_id = params['sessionId']
             connection_list[path] = self
             response = {
                 'jsonrpc': '2.0',
@@ -52,7 +54,11 @@ class SocketAdapter(AsyncJsonWebsocketConsumer):
                     'jsonrpc': '2.0',
                     'result': {
                         'key': 'notifySignal',
-                        'payload': params
+                        'params': {
+                            'key': 'inboundWebhook',
+                            'sessionId': connection_list[path].session_id,
+                            'payload': fields['payload']
+                        }
                     },
                     'id': id
                 }
