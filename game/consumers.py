@@ -24,22 +24,18 @@ class SocketAdapter(AsyncJsonWebsocketConsumer):
 
     async def receive(self, text_data=None, bytes_data=None, **kwargs):
         request = json.loads(text_data)
-        print('----------------------request------------------', request)
-        print('----------------------connection_list------------------', connection_list)
         method = request.get("method", None)
         params = request.get("params", None)
         fields = {}
-        if 'fields' in params:
-            fields = params['fields']
+        if params:
+            if 'fields' in params:
+                fields = params['fields']
         id = request.get("id", None)
 
         if method == 'setupSignal':
             path = fields["webhook_url"].strip("/").split("/")[-1]
-            print('----------------------path------------------', path)
             self.path = path
-            print('----------------------self------------------', self)
             connection_list[path] = self
-            print('----------------------connection_list[path]------------------', connection_list[path])
             response = {
                 'jsonrpc': '2.0',
                 'result': {},
@@ -51,7 +47,6 @@ class SocketAdapter(AsyncJsonWebsocketConsumer):
             path = fields["path"]
             existed = next((i for i, d in enumerate(connection_list) if path in d), None)
             if existed:
-                print('----------------------------------------', params)
                 run_action_response = {
                     'jsonrpc': '2.0',
                     'result': {
