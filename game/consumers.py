@@ -49,7 +49,7 @@ class SocketAdapter(AsyncJsonWebsocketConsumer):
             print('-------connection_list--------', connection_list)
             existed = next((i for i, d in enumerate(connection_list) if path in d), None)
             print('-------existed--------', existed)
-            if existed:
+            if existed is not None:
                 run_action_response = {
                     'jsonrpc': '2.0',
                     'result': {
