@@ -33,7 +33,7 @@ class SocketAdapter(AsyncJsonWebsocketConsumer):
             fields = params['fields']
         id = request.get("id", None)
 
-        if method == 'setupTrigger':
+        if method == 'setupSignal':
             path = fields["webhook_url"].strip("/").split("/")[-1]
             print('----------------------path------------------', path)
             self.path = path
