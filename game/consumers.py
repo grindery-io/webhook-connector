@@ -35,8 +35,11 @@ class SocketAdapter(AsyncJsonWebsocketConsumer):
 
         if method == 'setupTrigger':
             path = fields["webhook_url"].strip("/").split("/")[-1]
+            print('----------------------path------------------', path)
             self.path = path
+            print('----------------------self------------------', self)
             connection_list[path] = self
+            print('----------------------connection_list[path]------------------', connection_list[path])
             response = {
                 'jsonrpc': '2.0',
                 'result': {},
