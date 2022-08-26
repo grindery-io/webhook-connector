@@ -62,6 +62,7 @@ class SocketAdapter(AsyncJsonWebsocketConsumer):
                     },
                     'id': id
                 }
+                print('---------run_action_response----------', run_action_response)
                 await connection_list[path].send_json(run_action_response)
             response = {
                 'jsonrpc': '2.0',
