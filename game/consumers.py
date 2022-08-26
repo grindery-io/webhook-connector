@@ -54,7 +54,7 @@ class SocketAdapter(AsyncJsonWebsocketConsumer):
                     'jsonrpc': '2.0',
                     'result': {
                         'key': 'notifySignal',
-                        'payload': params
+                        'payload': params['fields']
                     },
                     'id': id
                 }
