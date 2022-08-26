@@ -46,6 +46,7 @@ class SocketAdapter(AsyncJsonWebsocketConsumer):
             path = fields["path"]
             existed = next((i for i, d in enumerate(connection_list) if path in d), None)
             if existed:
+                print('----------------------------------------', params)
                 run_action_response = {
                     'jsonrpc': '2.0',
                     'result': {
