@@ -47,7 +47,6 @@ class SocketAdapter(AsyncJsonWebsocketConsumer):
 
         if method == 'callWebhook':
             path = fields["path"]
-            print('-------request--------', request)
             existed = next((i for i, d in enumerate(connection_list) if path in d), None)
             if existed is not None:
                 run_action_response = {
@@ -60,7 +59,6 @@ class SocketAdapter(AsyncJsonWebsocketConsumer):
                     },
                     'id': id
                 }
-                print('---------run_action_response----------', run_action_response)
                 await connection_list[path].send_json(run_action_response)
             response = {
                 'jsonrpc': '2.0',
@@ -94,7 +92,7 @@ class SocketAdapter(AsyncJsonWebsocketConsumer):
                     r = requests.delete(url=request_url, data=request_data)
                 response_status = r.status_code
                 response_body = r.json()
-            except:
+            except Exception:
                 response_status = "Failed request"
                 response_body = {}
             response = {
