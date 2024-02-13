@@ -24,7 +24,7 @@ class GenericWebhook(GenericAPIView):
                         "key": "webhook_url",
                         "label": "Webhook URL",
                         "type": "string",
-                        "default": "https://orchestrator.grindery.org/webhook/genericWebhook/inboundWebhook/" + unique_id,
+                        "default": "https://orchestrator.grindery.com/webhook/genericWebhook/inboundWebhook/" + unique_id,
                         "readonly": True,
                         "helpText": "Send POST requests to this URL to trigger your workflow execution.",
                         "required": True
